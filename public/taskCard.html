@@ -61,7 +61,28 @@
           </ul>
         </div>
       </nav>
-
+      <div class="row">
+        <div class="col-md-9">
+          <form>
+            <input
+              id="searchId"
+              class="form-control"
+              type="search"
+              placeholder="Search Challenge#"
+            />
+          </form>
+        </div>
+        <div class="col-md-3">
+          <button
+            style="background-color: #0078b3;"
+            id="searchbtnId"
+            class="btn"
+            type="submit"
+          >
+            Search Challenge#
+          </button>
+        </div>
+      </div>
       <div id="wrapper" class="row"></div>
     </div>
   </body>
@@ -69,13 +90,9 @@
     $(document).ready(function(event){
      console.log(event);
 
-     $("#allchallenges").on('click',function(eventObj){
-        eventObj.preventDefault();
-        console.log("Welcome to all Challenges");
-
-        $.get("/api/alltasks/",function(resObj){
-            console.log(resObj);
-            resObj.forEach(function(element){
+     function createCards(cardsArray){
+      $("#wrapper").empty();
+          cardsArray.forEach(function(element){
                 const taskCardcardheader=$("<div>");
             taskCardcardheader.addClass("card-header").css({
                 "background-color": "#0078b3"
@@ -102,7 +119,6 @@
                 + '<li class="list-group-item">Experience Points:' + element.rewardpoints + "</li>"
                 + '<li class="list-group-item">Completion Date:' + element.enddate + "</li>");
 
-
                 const taskCardbody2=$("<div>");
      taskCardbody2.addClass("card-body");
      taskCardbody2.append($("<button>").attr({ id: "acceptId-" + element.id,
@@ -116,6 +132,16 @@
             $("#wrapper").append(taskCardcol.append(taskCardcard.append(taskCardcardheader,taskCardbody.append(taskCardbodyp,taskCardbodyul),taskCardbody2)));
 
             });
+        }
+
+
+     $("#allchallenges").on('click',function(eventObj){
+        eventObj.preventDefault();
+        console.log("Welcome to all Challenges");
+
+        $.get("/api/alltasks/",function(resObj){
+            console.log(resObj);
+            createCards(resObj);
         });
      });
 
@@ -127,6 +153,14 @@
         console.log(id.split("-"));
         console.log($(this).attr('id'));
         $("#"+id).remove();
+     });
+
+     $("#searchbtnId").on('click',function(eventObj){
+        let search=$("#searchId").val().trim();
+        $.get("/api/alltasks/title/" + search,function(data){
+          console.log(data);
+          createCards(data);
+        })
      });
 
     });

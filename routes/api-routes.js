@@ -1,6 +1,8 @@
 const path = require("path");
 const passport = require("passport");
 const db = require("../models");
+const Sequelize = require("sequelize");
+const Op = Sequelize.Op;
 
 module.exports = function(app) {
   app.get("/api/user/:id", function(req, res) {
@@ -56,11 +58,11 @@ module.exports = function(app) {
       });
   });
 
-  app.get("/api/task/title/:title", function(req, res) {
+  app.get("/api/alltasks/title/:title", function(req, res) {
     db.masterTask
       .findAll({
         where: {
-          title: req.params.title
+          title: { [Op.like]: "%" + req.params.title + "%" }
         }
       })
       .then(function(dbMTask) {
