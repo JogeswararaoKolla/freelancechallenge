@@ -18,7 +18,7 @@ module.exports = function(app) {
       email: req.body.email,
       fullname: req.body.fullname
     }).then(function(dbUser) {
-      res.redirect("/login.html");
+      res.redirect("/index.html");
     });
   });
 
