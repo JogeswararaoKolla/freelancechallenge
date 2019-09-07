@@ -3,7 +3,8 @@
   margin: 0 auto;
   font-family: Tahoma, Geneva, sans-serif;
 }
-.login-form h1 {
+
+h1 {
   text-align: center;
   color: #0078b3;
   font-size: 24px;
